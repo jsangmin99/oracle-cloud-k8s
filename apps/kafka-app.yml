@@ -6,7 +6,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://github.com/your-org/your-repo.git
+    repoURL: 'https://github.com/jsangmin99/oracle-cloud-k8s.git'
     targetRevision: main
     path: kafka                   # ✅ manifests 위치
   destination:

@@ -15,6 +15,14 @@ spec:
     spec:
       nodeSelector:
         kubernetes.io/hostname: "10.0.10.224"   # ✅ 특정 노드에 고정
+      initContainers:
+      - name: fix-permissions
+        image: busybox
+        command: ["sh", "-c", "chown -R 1001:1001 /bitnami/kafka"]
+        volumeMounts:
+        - name: data
+          mountPath: /bitnami/kafka
+
       containers:
       - name: kafka
         image: bitnami/kafka:3.7
