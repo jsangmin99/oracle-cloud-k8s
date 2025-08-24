@@ -34,7 +34,7 @@ spec:
         - name: OPENSEARCH_JAVA_OPTS
           value: "-Xms512m -Xmx512m"
         - name: OPENSEARCH_INITIAL_ADMIN_PASSWORD    # 필수
-          value: "Admin@12345"
+          value: "Opensearch!2025"
         volumeMounts:
         - name: data
           mountPath: /usr/share/opensearch/data
