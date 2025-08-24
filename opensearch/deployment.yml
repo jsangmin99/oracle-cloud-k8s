@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: opensearch
+  namespace: opensearch
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: opensearch
+  template:
+    metadata:
+      labels:
+        app: opensearch
+    spec:
+      nodeSelector:
+        kubernetes.io/hostname: "10.0.10.236"   # 원하는 노드에 고정 (Kafka랑 같이 둘 수도 있음)
+      initContainers:
+      - name: fix-permissions
+        image: busybox
+        command: ["sh", "-c", "chown -R 1000:1000 /usr/share/opensearch/data"]
+        volumeMounts:
+        - name: data
+          mountPath: /usr/share/opensearch/data
+      containers:
+      - name: opensearch
+        image: opensearchproject/opensearch:2.15.0
+        ports:
+        - containerPort: 9200
+        - containerPort: 9600
+        env:
+        - name: discovery.type
+          value: single-node
+        - name: OPENSEARCH_JAVA_OPTS
+          value: "-Xms512m -Xmx512m"
+        volumeMounts:
+        - name: data
+          mountPath: /usr/share/opensearch/data
+      volumes:
+      - name: data
+        hostPath:
+          path: /var/lib/opensearch
+          type: DirectoryOrCreate
