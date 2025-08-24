@@ -1,0 +1,18 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: test-nginx
+  namespace: argocd   # ArgoCD가 설치된 네임스페이스
+spec:
+  project: default
+  source:
+    repoURL: 'https://github.com/USERNAME/oracle-cloud-k8s.git'  # 👉 본인 Git 저장소 주소
+    targetRevision: main                                         # 👉 브랜치
+    path: apps/test-nginx                                        # 👉 실제 매니페스트 경로
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: default
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
